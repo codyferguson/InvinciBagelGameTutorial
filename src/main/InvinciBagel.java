@@ -3,27 +3,25 @@ package main;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.layout.Background;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-import javax.swing.text.html.ImageView;
-import java.awt.*;
-
-import static javafx.stage.StageStyle.TRANSPARENT;
-
 public class InvinciBagel extends Application {
-    Scene scene;
-    StackPane root;
-    Image splashScreen, instructionLayer, legalLayer, screenLayer;
-    ImageView slashScreenBackplate, splashScreenTextArea;
-    Button gameButton, helpButton, scoreButton, legalButton;
-    HBox buttonContainer;
-    Insets buttonContainerPadding;
+    private Scene scene;
+    private StackPane root;
+    private Image splashScreen, instructionLayer, legalLayer, scoresLayer;
+    private ImageView splashScreenBackplate, splashScreenTextArea;
+    private Button gameButton, helpButton, scoreButton, legalButton;
+    static HBox buttonContainer;
+    private Insets buttonContainerPadding;
+    private GamePlayLoop gamePlayLoop;
 
     public InvinciBagel() {
         int lifeIndex = 1000;
@@ -51,49 +49,61 @@ public class InvinciBagel extends Application {
         gameButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-
+                //TODO
             }
         });
         helpButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-
+                splashScreenTextArea.setImage(instructionLayer);
             }
         });
         scoreButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-
+                splashScreenTextArea.setImage(scoresLayer);
             }
         });
         legalButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-
+                splashScreenTextArea.setImage(legalLayer);
             }
         });
+        gamePlayLoop = new GamePlayLoop();
+        gamePlayLoop.start();
     }
 
     private void createSplashScreenNodes() {
-        gameButton = new Button();
-        gameButton.setText("game");
-        helpButton = new Button();
-        helpButton.setText("help");
-        scoreButton = new Button();
-        scoreButton.setText("score");
-        legalButton = new Button();
-        legalButton.setText("legal");
-
         root = new StackPane();
-        root.setBackground(Background.EMPTY);
-        scene = new Scene(root, 300, 275);
+        scene = new Scene(root, 640, 400);
+        buttonContainer = new HBox(12);
+        buttonContainer.setAlignment(Pos.BOTTOM_LEFT);
+        buttonContainerPadding = new Insets(0, 0, 10, 16);
+        buttonContainer.setPadding(buttonContainerPadding);
+        gameButton = new Button();
+        gameButton.setText("PLAY GAME");
+        helpButton = new Button();
+        helpButton.setText("INSTRUCTIONS");
+        scoreButton = new Button();
+        scoreButton.setText("HIGH SCORES");
+        legalButton = new Button();
+        legalButton.setText("LEGAL & CREDITS");
+        buttonContainer.getChildren().addAll(gameButton, helpButton, scoreButton, legalButton);
+        splashScreen = new Image("/invincibagelsplash.png", 640, 400, true, false, true);
+        splashScreenBackplate = new ImageView();
+        splashScreenBackplate.setImage(splashScreen); // this java statement connects the two statements
+        instructionLayer = new Image("invincibagelinstruct.png", 640, 400, true, false, true);
+        splashScreenTextArea = new ImageView();
+        splashScreenTextArea.setImage(instructionLayer);
+        legalLayer = new Image("/invincibagelcreds.png", 640, 400, true, false, true);
+        scoresLayer = new Image("/invincibagelscores.png", 640, 400, true, false, true);
     }
 
     private void addNodesToStackPane() {
-        root.getChildren().add(gameButton);
-        root.getChildren().add(helpButton);
-        root.getChildren().add(scoreButton);
-        root.getChildren().add(legalButton);
+        root.getChildren().add(splashScreenBackplate);
+        root.getChildren().add(splashScreenTextArea);
+        root.getChildren().add(buttonContainer);
     }
 
     public static void main(String[] args) {
