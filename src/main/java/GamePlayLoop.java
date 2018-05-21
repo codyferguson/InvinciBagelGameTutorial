@@ -1,4 +1,4 @@
-package main;
+package main.java;
 
 import javafx.animation.AnimationTimer;
 import javafx.geometry.Pos;
