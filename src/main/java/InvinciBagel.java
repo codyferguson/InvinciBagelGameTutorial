@@ -15,7 +15,7 @@ import javafx.stage.Stage;
 public class InvinciBagel extends Application {
     private static final double WIDTH = 640, HEIGHT = 400;
     private boolean up, down, left, right;
-    private static Bagel ibagel;
+    private static Bagel iBagel;
     private CastingDirector castDirector;
     private Scene scene;
     private StackPane root;
@@ -58,25 +58,6 @@ public class InvinciBagel extends Application {
         createSplashScreenNodes();
         addNodesToStackPane();
         createStartGameLoop();
-        gameButton.setOnAction(event -> {
-            splashScreenBackplate.setVisible(false);
-            splashScreenTextArea.setVisible(false);
-        });
-        helpButton.setOnAction(event -> {
-            splashScreenBackplate.setVisible(true);
-            splashScreenTextArea.setVisible(true);
-            splashScreenTextArea.setImage(instructionLayer);
-        });
-        scoreButton.setOnAction(event -> {
-                splashScreenBackplate.setVisible(true);
-                splashScreenTextArea.setVisible(true);
-                splashScreenTextArea.setImage(scoresLayer);
-        });
-        legalButton.setOnAction(event -> {
-            splashScreenBackplate.setVisible(true);
-            splashScreenTextArea.setVisible(true);
-            splashScreenTextArea.setImage(legalLayer);
-        });
         gamePlayLoop = new GamePlayLoop();
         gamePlayLoop.start();
     }
@@ -125,22 +106,17 @@ public class InvinciBagel extends Application {
     }
 
     private void createGameActors() {
-        //Todo
-    }
-
-    private void createStartGameLoop() {
-        //TODO
-    }
-
-    private void createCastingDirection() {
-        //TODO
+        iBagel = new Bagel("M150 0 L75 500 L225 200 Z", 0, 0, iB0, iB1, iB2, iB3, iB4, iB5, iB6, iB7, iB8);
     }
 
     private void addGameActorNodes() {
-        //TODO
+        root.getChildren().add(iBagel.spriteFrame);
     }
 
-
+    private void createCastingDirection() {
+        castDirector = new CastingDirector();
+        castDirector.addCurrentCast(iBagel);
+    }
 
     private void createSplashScreenNodes() {
         root = new StackPane();
@@ -152,17 +128,41 @@ public class InvinciBagel extends Application {
         buttonContainer.setPadding(buttonContainerPadding);
         gameButton = new Button();
         gameButton.setText("PLAY GAME");
+        gameButton.setOnAction(event -> {
+            splashScreenBackplate.setVisible(false);
+            splashScreenTextArea.setVisible(false);
+        });
         helpButton = new Button();
         helpButton.setText("INSTRUCTIONS");
+        helpButton.setOnAction(event -> {
+            splashScreenBackplate.setVisible(true);
+            splashScreenTextArea.setVisible(true);
+            splashScreenTextArea.setImage(instructionLayer);
+        });
         scoreButton = new Button();
         scoreButton.setText("HIGH SCORES");
+        scoreButton.setOnAction(event -> {
+            splashScreenBackplate.setVisible(true);
+            splashScreenTextArea.setVisible(true);
+            splashScreenTextArea.setImage(scoresLayer);
+        });
         legalButton = new Button();
         legalButton.setText("LEGAL & CREDITS");
+        legalButton.setOnAction(event -> {
+            splashScreenBackplate.setVisible(true);
+            splashScreenTextArea.setVisible(true);
+            splashScreenTextArea.setImage(legalLayer);
+        });
         buttonContainer.getChildren().addAll(gameButton, helpButton, scoreButton, legalButton);
         splashScreenBackplate = new ImageView();
         splashScreenBackplate.setImage(splashScreen); // this java statement connects the two statements
         splashScreenTextArea = new ImageView();
         splashScreenTextArea.setImage(instructionLayer);
+    }
+
+    private void createStartGameLoop() {
+        gamePlayLoop = new GamePlayLoop();
+        gamePlayLoop.start();
     }
 
     private void addNodesToStackPane() {
