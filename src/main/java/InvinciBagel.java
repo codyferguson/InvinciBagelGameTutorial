@@ -14,8 +14,8 @@ import javafx.stage.Stage;
 
 public class InvinciBagel extends Application {
     private static final double WIDTH = 640, HEIGHT = 400;
-    private boolean up, down, left, right;
-    private static Bagel iBagel;
+    protected static boolean up, down, left, right;
+    protected static Bagel iBagel;
     private CastingDirector castDirector;
     private Scene scene;
     private StackPane root;
@@ -44,7 +44,7 @@ public class InvinciBagel extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) {
         primaryStage.setTitle("InvinciBagel");
         root = new StackPane();
         scene = new Scene(root, WIDTH, HEIGHT, Color.WHITE);
@@ -58,8 +58,6 @@ public class InvinciBagel extends Application {
         createSplashScreenNodes();
         addNodesToStackPane();
         createStartGameLoop();
-        gamePlayLoop = new GamePlayLoop();
-        gamePlayLoop.start();
     }
 
     private void createSceneEventHandling() {
@@ -119,9 +117,6 @@ public class InvinciBagel extends Application {
     }
 
     private void createSplashScreenNodes() {
-        root = new StackPane();
-        scene = new Scene(root, WIDTH, HEIGHT, Color.WHITE);
-
         buttonContainer = new HBox(12);
         buttonContainer.setAlignment(Pos.BOTTOM_LEFT);
         buttonContainerPadding = new Insets(0, 0, 10, 16);

@@ -9,7 +9,7 @@ public abstract class Hero extends Actor {
     public Hero(String SVGdata, double xLocation, double yLocation, Image... spriteCells) {
         super(SVGdata, xLocation, yLocation, spriteCells);
         lifeSpan = 1000;
-        vX = vY = damage = offsetX = offsetY = 0;
+        vX = vY = damage = offsetX = offsetY = 1;
         boundScale = boundRot = friction = gravity = bounce = 0;
     }
 

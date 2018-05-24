@@ -1,14 +1,12 @@
 package main.java;
 
 import javafx.animation.AnimationTimer;
-import javafx.geometry.Pos;
+import static main.java.InvinciBagel.iBagel; // did not know you could do this!
 
 public class GamePlayLoop extends AnimationTimer {
-    private Pos location;
     @Override
     public void handle(long now) {
-        //program logic that gets processed on every pulse that JavaFX processes
-
+        iBagel.update();
     }
 
     @Override
