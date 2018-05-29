@@ -13,9 +13,9 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class InvinciBagel extends Application {
-    private static final double WIDTH = 640, HEIGHT = 400;
-    protected static boolean up, down, left, right;
-    protected static Bagel iBagel;
+    protected static final double WIDTH = 640, HEIGHT = 400;
+    private boolean up, down, left, right;
+    Bagel iBagel;
     private CastingDirector castDirector;
     private Scene scene;
     private StackPane root;
@@ -23,7 +23,7 @@ public class InvinciBagel extends Application {
     private Image iB0, iB1, iB2, iB3, iB4, iB5, iB6, iB7, iB8;
     private ImageView splashScreenBackplate, splashScreenTextArea;
     private Button gameButton, helpButton, scoreButton, legalButton;
-    static HBox buttonContainer;
+    private HBox buttonContainer;
     private Insets buttonContainerPadding;
     private GamePlayLoop gamePlayLoop;
 
@@ -104,7 +104,7 @@ public class InvinciBagel extends Application {
     }
 
     private void createGameActors() {
-        iBagel = new Bagel("M150 0 L75 500 L225 200 Z", 0, 0, iB0, iB1, iB2, iB3, iB4, iB5, iB6, iB7, iB8);
+        iBagel = new Bagel(this, "M150 0 L75 500 L225 200 Z", 0, 0, iB0, iB1, iB2, iB3, iB4, iB5, iB6, iB7, iB8);
     }
 
     private void addGameActorNodes() {
@@ -156,7 +156,7 @@ public class InvinciBagel extends Application {
     }
 
     private void createStartGameLoop() {
-        gamePlayLoop = new GamePlayLoop();
+        gamePlayLoop = new GamePlayLoop(this);
         gamePlayLoop.start();
     }
 
@@ -168,5 +168,38 @@ public class InvinciBagel extends Application {
 
     public static void main(String[] args) {
         launch(args);
+    }
+
+    public boolean isUp() {
+        return up;
+    }
+
+    public boolean isDown() {
+        return down;
+    }
+
+    public boolean isLeft() {
+        return left;
+    }
+
+    public boolean isRight() {
+        return right;
+    }
+
+
+    public void setUp(boolean up) {
+        this.up = up;
+    }
+
+    public void setDown(boolean down) {
+        this.down = down;
+    }
+
+    public void setLeft(boolean left) {
+        this.left = left;
+    }
+
+    public void setRight(boolean right) {
+        this.right = right;
     }
 }

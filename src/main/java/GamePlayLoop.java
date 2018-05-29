@@ -1,12 +1,17 @@
 package main.java;
 
 import javafx.animation.AnimationTimer;
-import static main.java.InvinciBagel.iBagel; // did not know you could do this!
 
 public class GamePlayLoop extends AnimationTimer {
+    protected InvinciBagel invinciBagel;
+
+    public GamePlayLoop(InvinciBagel iBagel){
+        invinciBagel = iBagel;
+    }
+
     @Override
     public void handle(long now) {
-        iBagel.update();
+        invinciBagel.iBagel.update();
     }
 
     @Override
