@@ -11,6 +11,9 @@ public class Bagel extends Hero {
     protected static final double leftBoundary = -(WIDTH/2 - SPRITE_PIXELS_X/2);
     protected static final double bottomBoundary = HEIGHT/2 - SPRITE_PIXELS_Y/2;
     protected static final double topBoundary = -(HEIGHT/2 - SPRITE_PIXELS_Y/2);
+    private boolean animator = false;
+    private int frameCounter = 0;
+    private int runningSpeed = 6;
 
     protected InvinciBagel invinciBagel;
 
@@ -23,6 +26,7 @@ public class Bagel extends Hero {
     public void update() {
         setXYLocation();
         setBoundaries();
+        setImageState();
         moveInvinciBagel(iX, iY);
     }
 
@@ -51,6 +55,56 @@ public class Bagel extends Hero {
     private void moveInvinciBagel(double x, double y) {
         spriteFrame.setTranslateX(x);
         spriteFrame.setTranslateY(y);
+    }
+
+    private void setImageState(){
+        if(!invinciBagel.isRight() && !invinciBagel.isLeft() && !invinciBagel.isDown() && !invinciBagel.isUp()){
+            spriteFrame.setImage(imageStates.get(0));
+            animator = false;
+            frameCounter = 0;
+        }
+        if(invinciBagel.isRight()){
+            spriteFrame.setScaleX(1);
+            if(!animator){
+                spriteFrame.setImage(imageStates.get(1));
+                if(frameCounter >= runningSpeed) {
+                    animator = true;
+                    frameCounter = 0;
+                } else
+                    frameCounter++;
+            } else if(animator){
+                spriteFrame.setImage(imageStates.get(2));
+                if(frameCounter >= runningSpeed){
+                    animator = false;
+                    frameCounter = 0;
+                } else
+                    frameCounter++;
+            }
+        }
+        if(invinciBagel.isLeft()){
+            spriteFrame.setScaleX(-1);
+            if(!animator) {
+                spriteFrame.setImage(imageStates.get(1));
+                if(frameCounter >= runningSpeed) {
+                    animator = true;
+                    frameCounter = 0;
+                } else
+                    frameCounter++;
+            } else if (animator){
+                spriteFrame.setImage(imageStates.get(2));
+                if(frameCounter >= runningSpeed) {
+                    animator = false;
+                    frameCounter = 0;
+                } else
+                    frameCounter++;
+            }
+        }
+        if(invinciBagel.isDown()){
+            spriteFrame.setImage(imageStates.get(6));
+        }
+        if(invinciBagel.isUp()) {
+            spriteFrame.setImage(imageStates.get(4));
+        }
     }
 
     @Override
