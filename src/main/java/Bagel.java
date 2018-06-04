@@ -65,7 +65,8 @@ public class Bagel extends Hero {
         }
         if(invinciBagel.isRight()){
             spriteFrame.setScaleX(1);
-            if(!animator){
+            this.setIsFlipH(false);
+            if(!animator && (!invinciBagel.isDown() && ! invinciBagel.isUp())){
                 spriteFrame.setImage(imageStates.get(1));
                 if(frameCounter >= runningSpeed) {
                     animator = true;
@@ -83,7 +84,8 @@ public class Bagel extends Hero {
         }
         if(invinciBagel.isLeft()){
             spriteFrame.setScaleX(-1);
-            if(!animator) {
+            this.setIsFlipH(true);
+            if(!animator && (!invinciBagel.isDown() && !invinciBagel.isUp())) {
                 spriteFrame.setImage(imageStates.get(1));
                 if(frameCounter >= runningSpeed) {
                     animator = true;
@@ -104,6 +106,12 @@ public class Bagel extends Hero {
         }
         if(invinciBagel.isUp()) {
             spriteFrame.setImage(imageStates.get(4));
+        }
+        if(invinciBagel.iswKey()){
+            spriteFrame.setImage(imageStates.get(5));
+        }
+        if(invinciBagel.issKey()){
+            spriteFrame.setImage(imageStates.get(8));
         }
     }
 

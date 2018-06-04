@@ -119,10 +119,10 @@ public abstract class Actor {
     public void setHasValu(boolean hasValu) {
         this.hasValu = hasValu;
     }
-    public void setFlipV(boolean flipV) {
+    public void setIsFlipV(boolean flipV) {
         isFlipV = flipV;
     }
-    public void setFlipH(boolean flipH) {
+    public void setIsFlipH(boolean flipH) {
         isFlipH = flipH;
     }
 }
