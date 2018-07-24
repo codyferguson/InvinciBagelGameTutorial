@@ -20,6 +20,9 @@
 .idea/**/dynamic.xml
 .idea/**/uiDesigner.xml
 
+# I added under high churn
+**/resources/META-INF/
+
 # IntelliJ
 out/
 
