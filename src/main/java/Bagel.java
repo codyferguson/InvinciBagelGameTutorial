@@ -1,16 +1,19 @@
 package main.java;
 
 import javafx.scene.image.Image;
+import javafx.scene.shape.SVGPath;
+import javafx.scene.shape.Shape;
+
 import static main.java.InvinciBagel.WIDTH;
 import static main.java.InvinciBagel.HEIGHT;
 
 public class Bagel extends Hero {
     protected static final double SPRITE_PIXELS_X = 81;
     protected static final double SPRITE_PIXELS_Y = 81;
-    protected static final double rightBoundary = WIDTH/2 - SPRITE_PIXELS_X/2;
-    protected static final double leftBoundary = -(WIDTH/2 - SPRITE_PIXELS_X/2);
-    protected static final double bottomBoundary = HEIGHT/2 - SPRITE_PIXELS_Y/2;
-    protected static final double topBoundary = -(HEIGHT/2 - SPRITE_PIXELS_Y/2);
+    protected static final double rightBoundary = WIDTH - SPRITE_PIXELS_X/2;
+    protected static final double leftBoundary = 0;
+    protected static final double bottomBoundary = HEIGHT - SPRITE_PIXELS_Y/2;
+    protected static final double topBoundary = 0;
     private boolean animator = false;
     private int frameCounter = 0;
     private int runningSpeed = 6;
@@ -28,7 +31,8 @@ public class Bagel extends Hero {
         setBoundaries();
         setImageState();
         moveInvinciBagel(iX, iY);
-        playAudioClip();
+//        playAudioClip();
+        checkCollision();
     }
 
     private void setXYLocation() {
@@ -71,6 +75,51 @@ public class Bagel extends Hero {
             invinciBagel.playiSound4();
         if(invinciBagel.issKey())
             invinciBagel.playiSound5();
+    }
+
+    public void checkCollision() {
+        for(int i = 0; i < invinciBagel.castDirector.getCurrentCast().size(); i++){
+            Actor object = invinciBagel.castDirector.getCurrentCast().get(i);
+            if(collide(object)){
+                invinciBagel.castDirector.addToRemovedActors(object);
+                invinciBagel.root.getChildren().remove(object.getSpriteFrame());
+                invinciBagel.castDirector.resetRemovedActors();
+                scoringEngine(object);
+            }
+        }
+    }
+
+    private void scoringEngine(Actor object) {
+        if(object instanceof Prop) {
+            invinciBagel.gameScore -= 1;
+            invinciBagel.playiSound0();
+        } else if(object instanceof PropV) {
+            invinciBagel.gameScore -= 2;
+            invinciBagel.playiSound1();
+        } else if(object instanceof PropH) {
+            invinciBagel.gameScore -= 1;
+            invinciBagel.playiSound2();
+        } else if(object instanceof  PropB) {
+            invinciBagel.gameScore -= 2;
+            invinciBagel.playiSound3();
+        } else if(object instanceof Treasure) {
+            invinciBagel.gameScore += 5;
+            invinciBagel.playiSound4();
+        }
+        invinciBagel.scoreText.setText(String.valueOf(invinciBagel.gameScore));
+    }
+
+    @Override
+    public boolean collide(Actor object) {
+        if(invinciBagel.iBagel.spriteFrame.getBoundsInParent().intersects(
+                object.getSpriteFrame().getBoundsInParent()) ) {
+            Shape intersection = SVGPath.intersect(invinciBagel.iBagel.getSpriteBound(),
+                    object.getSpriteBound());
+            if(intersection.getBoundsInLocal().getWidth() != -1 ){
+                return true;
+            }
+        }
+        return false;
     }
 
     private void setImageState(){
@@ -129,10 +178,5 @@ public class Bagel extends Hero {
         if(invinciBagel.issKey()){
             spriteFrame.setImage(imageStates.get(8));
         }
-    }
-
-    @Override
-    public boolean collide(Actor object) {
-        return false;
     }
 }
