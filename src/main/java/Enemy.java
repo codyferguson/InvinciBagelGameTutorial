@@ -15,6 +15,8 @@ public class Enemy extends Actor {
     boolean shootBullet = false;
     int spriteMoveR, spriteMoveL, destination, randomLocation, randomOffset, bulletRange, bulletOffset;
     InvinciBagel invinciBagel;
+    int pauseCounter = 0;
+    boolean launchIt = false;
 
     public Enemy(InvinciBagel iBagel, String SVGdata, double xLocation, double yLocation, Image... spriteCells) {
         super(SVGdata, xLocation, yLocation, spriteCells);
@@ -41,6 +43,12 @@ public class Enemy extends Actor {
         } else { initiateAttack(); }
         if (shootBullet){
             shootProjectile();
+            if(pauseCounter >= 60) {
+                launchIt = true;
+                pauseCounter = 0;
+            } else {
+                pauseCounter++;
+            }
         }
     }
 
@@ -59,7 +67,7 @@ public class Enemy extends Actor {
                     onScreen = true;
                 }
             }
-            if (onScreen) {
+            if (onScreen && launchIt) {
                 destination = 700;
                 if(spriteMoveR <= destination) {
                     spriteMoveR += 1;
@@ -68,6 +76,7 @@ public class Enemy extends Actor {
                     onScreen = false;
                     takeSides = true;
                     callAttack = false;
+                    launchIt = false;
                 }
             }
         }
@@ -102,6 +111,29 @@ public class Enemy extends Actor {
     }
 
     private void shootProjectile() {
-        
+        if(!takeSides){
+            invinciBagel.iBullet.spriteFrame.setTranslateY(randomOffset);
+            invinciBagel.iBullet.spriteFrame.setScaleX(-0.5);
+            invinciBagel.iBullet.spriteFrame.setScaleY(0.5);
+            bulletRange = -50;
+            if(bulletOffset >= bulletRange){
+                bulletOffset -= 4;
+                invinciBagel.iBullet.spriteFrame.setTranslateX(bulletOffset);
+            } else {
+                shootBullet = true;
+            }
+        }
+        if(takeSides) {
+            invinciBagel.iBullet.spriteFrame.setTranslateY(randomOffset);
+            invinciBagel.iBullet.spriteFrame.setScaleX(0.5);
+            invinciBagel.iBullet.spriteFrame.setScaleY(0.5);
+            bulletRange = 624;
+            if(bulletOffset <= bulletRange) {
+                bulletOffset += 4;
+                invinciBagel.iBullet.spriteFrame.setTranslateX(bulletOffset);
+            } else {
+                shootBullet = false;
+            }
+        }
     }
 }
