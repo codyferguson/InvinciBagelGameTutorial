@@ -105,6 +105,15 @@ public class Bagel extends Hero {
         } else if(object instanceof Treasure) {
             invinciBagel.gameScore += 5;
             invinciBagel.playiSound4();
+        } else if(object.equals(invinciBagel.iBullet)){
+            invinciBagel.gameScore -= 5;
+            invinciBagel.playiSound4();
+        } else if(object.equals(invinciBagel.iCheese)){
+            invinciBagel.gameScore += 5;
+            invinciBagel.playiSound0();
+        } else if(object.equals(invinciBagel.iBeagle)){
+            invinciBagel.gameScore += 10;
+            invinciBagel.playiSound0();
         }
         invinciBagel.scoreText.setText(String.valueOf(invinciBagel.gameScore));
     }
